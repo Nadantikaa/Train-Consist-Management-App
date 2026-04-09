@@ -1,35 +1,39 @@
-import java.util.ArrayList;
-import java.util.List;
-
-class Bogie {
-    String name;
-    int capacity;
-
-    Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-}
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrainManagementApp {
 
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
 
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
+        String trainId = "TRN-1234";
+        String cargoCode = "PET-AB";
 
-        int totalSeats = bogies.stream()
-                .map(Bogie::getCapacity)
-                .reduce(0, Integer::sum);
+        validateInput(trainId, cargoCode);
+    }
 
-        System.out.println("\n--- Total Seating Capacity ---");
-        System.out.println("Total Seats: " + totalSeats);
+    public static void validateInput(String trainId, String cargoCode) {
+        String trainIdRegex = "TRN-\\d{4}";
+        String cargoCodeRegex = "PET-[A-Z]{2}";
+
+        Pattern trainIdPattern = Pattern.compile(trainIdRegex);
+        Pattern cargoCodePattern = Pattern.compile(cargoCodeRegex);
+
+        Matcher trainIdMatcher = trainIdPattern.matcher(trainId);
+        Matcher cargoCodeMatcher = cargoCodePattern.matcher(cargoCode);
+
+        System.out.println("\n--- Validation Results ---");
+
+        if (trainIdMatcher.matches()) {
+            System.out.println("Train ID " + trainId + ": Valid");
+        } else {
+            System.out.println("Train ID " + trainId + ": Invalid (Format: TRN-1234)");
+        }
+
+        if (cargoCodeMatcher.matches()) {
+            System.out.println("Cargo Code " + cargoCode + ": Valid");
+        } else {
+            System.out.println("Cargo Code " + cargoCode + ": Invalid (Format: PET-AB)");
+        }
     }
 }
