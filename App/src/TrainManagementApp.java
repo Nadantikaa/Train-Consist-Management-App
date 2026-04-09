@@ -1,21 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-class GoodsBogie {
+class Bogie {
     String type;
-    String cargo;
+    int capacity;
 
-    GoodsBogie(String type, String cargo) {
+    Bogie(String type, int capacity) {
         this.type = type;
-        this.cargo = cargo;
+        this.capacity = capacity;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getCargo() {
-        return cargo;
+    public int getCapacity() {
+        return capacity;
     }
 }
 
@@ -24,23 +21,32 @@ public class TrainManagementApp {
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
 
-        List<GoodsBogie> goodsBogies = new ArrayList<>();
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsBogies.add(new GoodsBogie("Rectangular", "Coal"));
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-
-        boolean isSafe = goodsBogies.stream().allMatch(bogie -> {
-            if (bogie.getType().equalsIgnoreCase("Cylindrical")) {
-                return bogie.getCargo().equalsIgnoreCase("Petroleum");
-            }
-            return true;
-        });
-
-        System.out.println("\n--- Safety Compliance Check ---");
-        if (isSafe) {
-            System.out.println("Status: Train is safety compliant.");
-        } else {
-            System.out.println("Status: Train is UNSAFE! Cargo mismatch detected.");
+        List<Bogie> bogies = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            bogies.add(new Bogie("Sleeper", 72));
+            bogies.add(new Bogie("AC Chair", 56));
         }
+
+        long startTimeLoop = System.nanoTime();
+        List<Bogie> filteredLoop = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.getCapacity() > 60) {
+                filteredLoop.add(b);
+            }
+        }
+        long endTimeLoop = System.nanoTime();
+        long durationLoop = endTimeLoop - startTimeLoop;
+
+        long startTimeStream = System.nanoTime();
+        List<Bogie> filteredStream = bogies.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+        long endTimeStream = System.nanoTime();
+        long durationStream = endTimeStream - startTimeStream;
+
+        System.out.println("\n--- Performance Comparison ---");
+        System.out.println("Loop Duration: " + durationLoop + " ns");
+        System.out.println("Stream Duration: " + durationStream + " ns");
+        System.out.println("Results Match: " + (filteredLoop.size() == filteredStream.size()));
     }
 }
