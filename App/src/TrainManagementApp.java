@@ -8,22 +8,24 @@ public class TrainManagementApp {
 
         List<String> trainConsist = new ArrayList<>();
 
+        trainConsist.add("Sleeper");
+        trainConsist.add("AC Chair");
+        trainConsist.add("First Class");
+
         displayConsistSummary(trainConsist);
 
-        System.out.println("\nSystem initialized. Ready for operations.");
+        trainConsist.remove("AC Chair");
+
+        if (trainConsist.contains("Sleeper")) {
+            System.out.println("\nSleeper bogie exists.");
+        }
+
+        displayConsistSummary(trainConsist);
     }
 
     public static void displayConsistSummary(List<String> consist) {
         System.out.println("\n--- Current Consist Summary ---");
-
-        int bogieCount = consist.size();
-
-        System.out.println("Total Bogies: " + bogieCount);
-
-        if (bogieCount == 0) {
-            System.out.println("Status: The train is currently empty.");
-        } else {
-            System.out.println("Bogies: " + consist);
-        }
+        System.out.println("Total Bogies: " + consist.size());
+        System.out.println("Current Bogies: " + consist);
     }
 }
