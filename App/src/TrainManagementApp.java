@@ -1,31 +1,31 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class TrainManagementApp {
 
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
 
-        List<String> trainConsist = new ArrayList<>();
+        LinkedList<String> trainConsist = new LinkedList<>();
 
+        trainConsist.add("Engine");
         trainConsist.add("Sleeper");
-        trainConsist.add("AC Chair");
-        trainConsist.add("First Class");
+        trainConsist.add("AC");
+        trainConsist.add("Cargo");
+        trainConsist.add("Guard");
 
-        displayConsistSummary(trainConsist);
+        System.out.println("\nInitial Consist: " + trainConsist);
 
-        trainConsist.remove("AC Chair");
+        System.out.println("Inserting Pantry Car at position 2...");
+        trainConsist.add(2, "Pantry Car");
 
-        if (trainConsist.contains("Sleeper")) {
-            System.out.println("\nSleeper bogie exists.");
-        }
+        System.out.println("Current Consist: " + trainConsist);
 
-        displayConsistSummary(trainConsist);
-    }
+        System.out.println("\nDetaching first and last bogies...");
+        trainConsist.removeFirst();
+        trainConsist.removeLast();
 
-    public static void displayConsistSummary(List<String> consist) {
-        System.out.println("\n--- Current Consist Summary ---");
-        System.out.println("Total Bogies: " + consist.size());
-        System.out.println("Current Bogies: " + consist);
+        System.out.println("\n--- Final Ordered Train Consist ---");
+        System.out.println("Total Bogies: " + trainConsist.size());
+        System.out.println("Physical Sequence: " + trainConsist);
     }
 }
