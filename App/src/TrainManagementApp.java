@@ -1,43 +1,79 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Scanner;
 
 class Bogie {
-    String name;
-    int capacity;
+    String id;
+    String type;
 
-    Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    Bogie(String id, String type) {
+        this.id = id;
+        this.type = type;
     }
 
     @Override
     public String toString() {
-        return name + " (" + capacity + " seats)";
+        return "ID: " + id + " | Type: " + type;
     }
 }
 
 public class TrainManagementApp {
 
     public static void main(String[] args) {
+        List<Bogie> trainConsist = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
         System.out.println("=== Train Consist Management App ===");
 
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Sleeper", 80));
+        while (running) {
+            System.out.println("\n1. Add Bogie");
+            System.out.println("2. Display Consist");
+            System.out.println("3. Search Bogie by ID");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
 
-        System.out.println("\nAll Bogies:");
-        bogies.forEach(System.out::println);
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        List<Bogie> highCapacityBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
-
-        System.out.println("\nHigh-Capacity Bogies (Capacity > 60):");
-        highCapacityBogies.forEach(System.out::println);
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Bogie ID: ");
+                    String id = scanner.nextLine();
+                    System.out.print("Enter Bogie Type: ");
+                    String type = scanner.nextLine();
+                    trainConsist.add(new Bogie(id, type));
+                    System.out.println("Bogie added successfully.");
+                    break;
+                case 2:
+                    System.out.println("\n--- Current Train Consist ---");
+                    if (trainConsist.isEmpty()) {
+                        System.out.println("The train is empty.");
+                    } else {
+                        trainConsist.forEach(System.out::println);
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter ID to search: ");
+                    String searchId = scanner.nextLine();
+                    boolean found = false;
+                    for (Bogie b : trainConsist) {
+                        if (b.id.equalsIgnoreCase(searchId)) {
+                            System.out.println("Found: " + b);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) System.out.println("Bogie not found.");
+                    break;
+                case 4:
+                    running = false;
+                    System.out.println("Exiting system.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+        scanner.close();
     }
 }
